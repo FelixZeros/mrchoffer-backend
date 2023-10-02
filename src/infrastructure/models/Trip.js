@@ -10,14 +10,14 @@ export const Trip = sequelize.define("trip", {
   },
   driverId: {
     type: DataTypes.INTEGER,
-    allowNull: false,
+    allowNull: true,
   },
   date: {
     type: DataTypes.DATE,
     allowNull: false,
   },
   status: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   origin: {
@@ -49,12 +49,12 @@ export const Trip = sequelize.define("trip", {
     allowNull: false,
   },
   startTime: {
-    type: DataTypes.DATE,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   endTime: {
-    type: DataTypes.DATE,
-    allowNull: false,
+    type: DataTypes.TIME,
+    allowNull: null,
   },
   createdAt: {
     type: DataTypes.DATE,
