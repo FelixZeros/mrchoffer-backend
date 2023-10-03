@@ -2,8 +2,6 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../sequelize.js";
 import { Vehicle } from "./Vehicle.js";
 import { User } from "./User.js";
-import { Balance } from "./Balance.js";
-import { Company } from "./Company.js";
 
 export const Driver = sequelize.define("driver", {
   id: {
@@ -12,10 +10,6 @@ export const Driver = sequelize.define("driver", {
     autoIncrement: true,
   },
   userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  companyId: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -28,10 +22,6 @@ export const Driver = sequelize.define("driver", {
     allowNull: false,
   },
   gender: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  status: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -63,7 +53,3 @@ export const Driver = sequelize.define("driver", {
 
 Driver.belongsTo(User, { foreignKey: "userId" });
 Driver.belongsTo(Vehicle, { foreignKey: "vehicleId" });
-Driver.hasMany(Balance, { foreignKey: "driverId" });
-Balance.belongsTo(Driver, { foreignKey: "driverId", sourceKey: "id" });
-Driver.belongsTo(Company, { foreignKey: "companyId", sourceKey: "id" });
-Company.hasMany(Driver, { foreignKey: "companyId", sourceKey: "id" });

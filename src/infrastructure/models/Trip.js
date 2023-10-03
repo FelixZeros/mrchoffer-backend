@@ -12,6 +12,10 @@ export const Trip = sequelize.define("trip", {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  phoneNumber: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   date: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -29,7 +33,7 @@ export const Trip = sequelize.define("trip", {
     allowNull: false,
   },
   distance: {
-    type: DataTypes.DOUBLE,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   price: {
