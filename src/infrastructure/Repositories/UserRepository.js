@@ -3,6 +3,7 @@ import { User } from "../models/User.js";
 import { Company } from "../models/Company.js";
 import { Admin } from "../models/Admin.js";
 import { Driver } from "../models/Driver.js";
+import { Vehicle } from "../models/Vehicle.js";
 
 export default class UserRepositoryImplements extends UserRepository {
   async findByEmail({ email }) {
@@ -68,17 +69,35 @@ export default class UserRepositoryImplements extends UserRepository {
 
           if (user) {
             const driver = await Driver.create({
+              identification: data.identification,
               name: data.name,
-              photo: data.photo,
-              photoLicense: data.photoLicense,
-              status: data.status,
-              address: data.address,
-              phone: data.phone,
               gender: data.phone,
               city: data.city,
-              companyId: data.companyId,
+              photoDriverLicenseFront: data.photoDriverLicenseFront,
+              photoDriverLicenseBack: data.photoDriverLicenseBack,
+              photoIdentificationBack: data.photoIdentificationBack,
+              photoIdentificationFront: data.photoIdentificationFront,
+              status: 1,
+              phone: data.phone,
               userId: user.id,
-            });
+            })
+            if(driver){
+              const vehicle = await Vehicle.create({
+                numberPropertyCard: data.numberPropertyCard,
+                brand: data.brand,
+                model: data.model,
+                typeVehicle: data.typeVehicle,
+                color: data.color,
+                cc: data.cc,
+                photoPropertyCardFront: data.photoPropertyCardFront,
+                photoPropertyCardBack: data.photoPropertyCardBack,
+                line: data.line,
+                status: 1,
+                driverId: driver.id,
+              });
+            }
+
+          
             return { type, driver };
           }
         }

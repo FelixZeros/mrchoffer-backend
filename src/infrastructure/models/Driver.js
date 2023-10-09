@@ -13,11 +13,11 @@ export const Driver = sequelize.define("driver", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  name: {
+  identification: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  address: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -25,7 +25,19 @@ export const Driver = sequelize.define("driver", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  photoLicense: {
+  photoDriverLicenseBack: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  photoDriverLicenseFront: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  photoIdentificationBack: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  photoIdentificationFront: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -39,7 +51,7 @@ export const Driver = sequelize.define("driver", {
   },
   photo: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
   },
   createdAt: {
     type: DataTypes.DATE,

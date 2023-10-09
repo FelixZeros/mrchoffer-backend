@@ -8,11 +8,10 @@ export const requestTrip = async (req, res) => {
     const io = req.app.get("io");
     const trip = await tripRepository.requestTrip(body);
 
-    // if (trip) {
-    //   console.log("Solicitud de viaje recibida", trip);
+    if (trip) {
+      io.emit("server:request-trip", trip);
+    }
     res.status(200).json(trip);
-    //   io.emit("new-trip-request", {});
-    // }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

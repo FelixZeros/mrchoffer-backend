@@ -7,6 +7,14 @@ export const Vehicle = sequelize.define("vehicle", {
     primaryKey: true,
     autoIncrement: true,
   },
+  driverId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  numberPropertyCard: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   brand: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -15,15 +23,11 @@ export const Vehicle = sequelize.define("vehicle", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  plate: {
+  typeVehicle: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  type: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  capacity: {
+  cc: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -31,19 +35,19 @@ export const Vehicle = sequelize.define("vehicle", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  propertyCardFront: {
+  photoPropertyCardFront: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  propertyCardBack: {
+  photoPropertyCardBack: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  line: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   status: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  photo: {
     type: DataTypes.STRING,
     allowNull: false,
   },

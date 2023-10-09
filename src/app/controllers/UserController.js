@@ -6,16 +6,16 @@ export const save = async (req, res) => {
   try {
     const user = await userRepository.save(req.body);
     if (user.type === "company") {
-      res.status(201).json({ message: "Company created", user });
+      res.status(201).json({ isOk: true, message: "Company created", user });
     }
     if (user.type === "admin") {
-      res.status(201).json({ message: "Admin created", user });
+      res.status(201).json({ isOk: true, message: "Admin created", user });
     }
     if (user.type === "driver") {
-      res.status(201).json({ message: "Driver created", user });
+      res.status(201).json({ isOk: true, message: "Driver created", user });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Error creating user", error });
+    res.status(500).json({ isOk: false, message: "Error creating user", error });
   }
 };

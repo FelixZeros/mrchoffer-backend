@@ -5,14 +5,14 @@ import userRoutes from "./infrastructure/web/routes/userRoutes.js";
 import companyRoutes from "./infrastructure/web/routes/companyRoutes.js";
 import requestDriverCompanyRoutes from "./infrastructure/web/routes/requestDriverCompanyRoutes.js";
 import tripRoutes from "./infrastructure/web/routes/tripRoutes.js";
-import configureWebSockets from "./websockets.js"; // Importa el módulo de WebSockets
+import configureWebSockets from "./websockets.js";
 import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 
 async function main() {
   try {
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ force: true });
     console.log("Database synchronized");
   } catch (error) {
     console.log("Error synchronizing database: ", error);
@@ -24,7 +24,7 @@ async function main() {
   app.use(express.json());
   app.use(
     cors({
-      origin: "http://localhost:3000",
+      origin: "*",
     })
   );
   app.use(
@@ -36,13 +36,10 @@ async function main() {
     requestDriverCompanyRoutes
   );
 
-  app.get("/", (req, res) => {
-    res.send("Hello World!");
-  });
-
   app.listen(process.env.APP_PORT, () => {
     console.log("Server running on port", process.env.APP_PORT);
   });
+
   httpServer.listen(process.env.APP_PORT + 1, () => {
     console.log(
       "Servidor con WebSocket en el puerto",
