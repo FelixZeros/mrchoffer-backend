@@ -3,6 +3,7 @@ import { sequelize } from "./infrastructure/sequelize.js";
 import authRoutes from "./infrastructure/web/routes/authRoutes.js";
 import userRoutes from "./infrastructure/web/routes/userRoutes.js";
 import companyRoutes from "./infrastructure/web/routes/companyRoutes.js";
+import driverRoutes from "./infrastructure/web/routes/driverRoutes.js";
 import requestDriverCompanyRoutes from "./infrastructure/web/routes/requestDriverCompanyRoutes.js";
 import tripRoutes from "./infrastructure/web/routes/tripRoutes.js";
 import configureWebSockets from "./websockets.js";
@@ -12,7 +13,7 @@ dotenv.config();
 
 async function main() {
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     console.log("Database synchronized");
   } catch (error) {
     console.log("Error synchronizing database: ", error);
@@ -32,6 +33,7 @@ async function main() {
     authRoutes,
     userRoutes,
     companyRoutes,
+    driverRoutes,
     tripRoutes,
     requestDriverCompanyRoutes
   );

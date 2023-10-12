@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../sequelize.js";
-import { Vehicle } from "./Vehicle.js";
 import { User } from "./User.js";
+import { Vehicle } from "./Vehicle.js";
 
 export const Driver = sequelize.define("driver", {
   id: {
@@ -64,4 +64,5 @@ export const Driver = sequelize.define("driver", {
 });
 
 Driver.belongsTo(User, { foreignKey: "userId" });
-Driver.belongsTo(Vehicle, { foreignKey: "vehicleId" });
+Driver.hasOne(Vehicle, { foreignKey: "driverId", as: "vehicle" });
+Vehicle.belongsTo(Driver, { foreignKey: "driverId" });

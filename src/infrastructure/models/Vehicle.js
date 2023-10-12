@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../sequelize.js";
+import { Driver } from "./Driver.js";
 
 export const Vehicle = sequelize.define("vehicle", {
   id: {
