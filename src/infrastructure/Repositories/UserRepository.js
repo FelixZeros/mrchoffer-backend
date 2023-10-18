@@ -8,12 +8,38 @@ import { Vehicle } from "../models/Vehicle.js";
 export default class UserRepositoryImplements extends UserRepository {
   async findByEmail({ email }) {
     try {
-      console.log(email);
       return await User.findOne({ where: { email } });
     } catch (error) {
       throw new Error("Error when searching for user by email" + error);
     }
   }
+  async login({ email, password }) {
+    try {
+      const user = await User.findOne({ where: { email } });
+      if (!user) {
+        throw new Error("User not found");
+      }
+      if (user.password !== password) {
+        throw new Error("Incorrect password");
+      } else {
+        const company = await Company.findOne({ where: { userId: user.id } });
+        const admin = await Admin.findOne({ where: { userId: user.id } });
+        const driver = await Driver.findOne({ where: { userId: user.id } });
+        if (company) {
+          return { type: "company", company };
+        }
+        if (admin) {
+          return { type: "admin", admin };
+        }
+        if (driver) {
+          return { type: "driver", driver };
+        }
+      }
+    } catch (error) {
+      throw new Error("Error logging in");
+    }
+  }
+
   async save(data) {
     try {
       const { email, type } = data;
@@ -80,8 +106,8 @@ export default class UserRepositoryImplements extends UserRepository {
               status: 1,
               phone: data.phone,
               userId: user.id,
-            })
-            if(driver){
+            });
+            if (driver) {
               const vehicle = await Vehicle.create({
                 numberPropertyCard: data.numberPropertyCard,
                 brand: data.brand,
@@ -97,7 +123,6 @@ export default class UserRepositoryImplements extends UserRepository {
               });
             }
 
-          
             return { type, driver };
           }
         }

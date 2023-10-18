@@ -16,6 +16,8 @@ export const save = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ isOk: false, message: "Error creating user", error });
+    res
+      .status(500)
+      .json({ isOk: false, message: "Error creating user", error });
   }
 };
