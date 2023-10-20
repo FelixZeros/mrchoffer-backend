@@ -38,4 +38,4 @@ export const RequestDriverCompany = sequelize.define("request_driver_company", {
 RequestDriverCompany.belongsTo(Driver, { foreignKey: "driverId" });
 RequestDriverCompany.belongsTo(Company, { foreignKey: "companyId" });
 Driver.hasMany(RequestDriverCompany, { foreignKey: "driverId" });
-Company.hasMany(RequestDriverCompany, { foreignKey: "companyId" });
+Company.hasOne(RequestDriverCompany, { foreignKey: "companyId" });

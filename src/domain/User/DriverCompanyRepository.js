@@ -5,6 +5,9 @@ export default class DriverCompanyRepository {
   async getRequestByCompanyId() {
     throw new Error("Method not implemented.");
   }
+  async getRequestByDriverId() {
+    throw new Error("Method not implemented.");
+  }
   async createRequest() {
     throw new Error("Method not implemented.");
   }

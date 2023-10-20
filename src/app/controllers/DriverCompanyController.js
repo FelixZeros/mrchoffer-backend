@@ -22,6 +22,17 @@ export const getRequestByCompanyId = async (req, res) => {
   }
 };
 
+export const getRequestByDriverId = async (req, res) => {
+  try {
+    const request = await driverCompanyRepository.getRequestByDriverId(
+      req.params
+    );
+    res.status(200).json(request);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 export const createRequest = async (req, res) => {
   try {
     const request = await driverCompanyRepository.createRequest(req.body);

@@ -19,6 +19,15 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
       throw new Error("Error when search companys" + error);
     }
   }
+  async getRequestByDriverId(data) {
+    try {
+      return await RequestDriverCompany.findAll({
+        where: { driverId: data.driverId },
+      });
+    } catch (error) {
+      throw new Error("Error when search companys" + error);
+    }
+  }
   async createRequest(request) {
     try {
       return await RequestDriverCompany.create(request);
