@@ -2,6 +2,7 @@
 
 import { Server } from "socket.io";
 import { createServer } from "http";
+import { acceptTrip } from "./app/controllers/TripController.js";
 
 // Configuración de WebSockets
 const configureWebSockets = (app) => {
@@ -15,12 +16,12 @@ const configureWebSockets = (app) => {
   io.on("connection", (socket) => {
     console.log("Cliente WebSocket conectado");
 
-    socket.on("server:request-trip", (trip) => {
-      console.log("Solicitud de viaje recibida", trip);
-      socket.emit("server:request-trip", { coords: 1232131232 });
-      console.log("Solicitud de viaje enviada a todos los clientes");
+    socket.on("client:accept-trip", (info) => {
+      console.log("Cliente WebSocket envió información:");
+      acceptTrip(info);
     });
   });
+
   app.set("io", io);
 
   return httpServer;
