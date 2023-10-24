@@ -2,7 +2,11 @@
 
 import { Server } from "socket.io";
 import { createServer } from "http";
-import { acceptTrip } from "./app/controllers/TripController.js";
+import {
+  acceptTrip,
+  startTripDriverLocation,
+  finishTrip,
+} from "./app/controllers/TripController.js";
 
 // Configuración de WebSockets
 const configureWebSockets = (app) => {
@@ -19,6 +23,15 @@ const configureWebSockets = (app) => {
     socket.on("client:accept-trip", (info) => {
       console.log("Cliente WebSocket envió información:");
       acceptTrip(info);
+    });
+
+    socket.on("client:send-location", (info) => {
+      console.log("Cliente WebSocket envió información:");
+      startTripDriverLocation(info);
+    });
+    socket.on("client:finish-trip", (info) => {
+      console.log("Cliente WebSocket envió información:");
+      finishTrip(info);
     });
   });
 

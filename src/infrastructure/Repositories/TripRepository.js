@@ -29,4 +29,20 @@ export default class TripRepositoryImplements extends TripRepository {
       throw new Error("Error when get trips" + error);
     }
   }
+  async finishTrip(trip) {
+    try {
+      const tripFinished = await Trip.update(
+        {
+          status: 3,
+          endTime: new Date(
+            new Date().getTime() - new Date().getTimezoneOffset() * 60000
+          ),
+        },
+        { where: { id: trip.id } }
+      );
+      return tripFinished;
+    } catch (error) {
+      throw new Error("Error when finish trip" + error);
+    }
+  }
 }

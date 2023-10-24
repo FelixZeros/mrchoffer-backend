@@ -26,8 +26,8 @@ export const acceptTrip = async (trip) => {
     const tripAccepted = await tripRepository.acceptTrip(trip);
 
     if (tripAccepted) {
+      const getTrip = trips.find((t) => t.id === trip.id);
       try {
-        const getTrip = trips.find((t) => t.id === trip.id);
         fetch("http://localhost:7000/enviarMensaje", {
           method: "POST",
           headers: {
@@ -39,7 +39,7 @@ export const acceptTrip = async (trip) => {
             time: trip.time,
             distance: trip.distance,
           }),
-        });
+        }).catch((error) => console.log(error));
       } catch (error) {
         console.log(error);
       }
@@ -58,5 +58,22 @@ export const getTrips = async (req, res) => {
     res.status(200).json(trips);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+export const startTripDriverLocation = async (data) => {
+  try {
+    const { tripInfo, driverLocation } = data;
+    console.log("tripInfo", driverLocation);
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const finishTrip = async (trip) => {
+  try {
+    await tripRepository.finishTrip(trip);
+  } catch (error) {
+    console.log("error", error);
   }
 };

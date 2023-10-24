@@ -8,4 +8,7 @@ export default class TripRepository {
   async getTrips() {
     throw new Error("Method not implemented.");
   }
+  async finishTrip(trip) {
+    throw new Error("Method not implemented.");
+  }
 }

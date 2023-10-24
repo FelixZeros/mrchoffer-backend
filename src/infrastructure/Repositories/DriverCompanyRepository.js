@@ -1,6 +1,7 @@
 import { DriverCompany } from "../models/DriverCompany.js";
 import { RequestDriverCompany } from "../models/RequestDriverCompany.js";
 import DriverCompanyRepository from "../../domain/User/DriverCompanyRepository.js";
+import { Company } from "../models/Company.js";
 
 export default class DriverCompanyImplements extends DriverCompanyRepository {
   async getRequest() {
@@ -14,6 +15,12 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
     try {
       return await RequestDriverCompany.findAll({
         where: { companyId: data.companyId },
+        include: [
+          {
+            model: Company,
+            as: "company",
+          },
+        ],
       });
     } catch (error) {
       throw new Error("Error when search companys" + error);
