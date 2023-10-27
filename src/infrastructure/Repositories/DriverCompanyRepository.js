@@ -35,6 +35,16 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
     try {
       return await RequestDriverCompany.findAll({
         where: { driverId: data.driverId },
+        include: [
+          {
+            model: Company,
+            as: "company",
+          },
+          {
+            model: Driver,
+            as: "driver",
+          },
+        ],
       });
     } catch (error) {
       throw new Error("Error when search companys" + error);
