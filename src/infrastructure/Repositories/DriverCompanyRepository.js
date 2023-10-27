@@ -2,6 +2,7 @@ import { DriverCompany } from "../models/DriverCompany.js";
 import { RequestDriverCompany } from "../models/RequestDriverCompany.js";
 import DriverCompanyRepository from "../../domain/User/DriverCompanyRepository.js";
 import { Company } from "../models/Company.js";
+import { Driver } from "../models/Driver.js";
 
 export default class DriverCompanyImplements extends DriverCompanyRepository {
   async getRequest() {
@@ -19,6 +20,10 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
           {
             model: Company,
             as: "company",
+          },
+          {
+            model: Driver,
+            as: "driver",
           },
         ],
       });
