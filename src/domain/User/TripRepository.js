@@ -2,6 +2,9 @@ export default class TripRepository {
   async requestTrip(trip) {
     throw new Error("Method not implemented.");
   }
+  async cancelTrip(trip) {
+    throw new Error("Method not implemented.");
+  }
   async acceptTrip(trip) {
     throw new Error("Method not implemented.");
   }
@@ -9,6 +12,9 @@ export default class TripRepository {
     throw new Error("Method not implemented.");
   }
   async finishTrip(trip) {
+    throw new Error("Method not implemented.");
+  }
+  async getTripById(id) {
     throw new Error("Method not implemented.");
   }
 }

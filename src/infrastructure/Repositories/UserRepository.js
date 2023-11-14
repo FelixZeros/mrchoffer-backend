@@ -59,6 +59,7 @@ export default class UserRepositoryImplements extends UserRepository {
               city: data.city,
               phone: data.phone,
               photo: data.photo,
+              username: data.username,
               userId: user.id,
             });
             return { type, company };
@@ -114,6 +115,7 @@ export default class UserRepositoryImplements extends UserRepository {
                 model: data.model,
                 typeVehicle: data.typeVehicle,
                 color: data.color,
+                plate: data.plate,
                 cc: data.cc,
                 photoPropertyCardFront: data.photoPropertyCardFront,
                 photoPropertyCardBack: data.photoPropertyCardBack,

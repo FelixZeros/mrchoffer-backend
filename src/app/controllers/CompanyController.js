@@ -10,3 +10,14 @@ export const getCompanys = async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 };
+
+export const getCompanyByUsername = async (req, res) => {
+  try {
+    const company = await companyRepository.getCompanyByUsername(
+      req.params.username
+    );
+    return res.status(200).json(company);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};

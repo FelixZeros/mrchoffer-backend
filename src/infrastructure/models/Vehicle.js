@@ -44,6 +44,10 @@ export const Vehicle = sequelize.define("vehicle", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  plate: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   line: {
     type: DataTypes.STRING,
     allowNull: false,

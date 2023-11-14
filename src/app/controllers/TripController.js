@@ -1,32 +1,38 @@
 import TripRepository from "../../infrastructure/Repositories/TripRepository.js";
 
 const tripRepository = new TripRepository();
-const trips = [];
 let io;
 
-export const requestTrip = async (req, res) => {
-  const { body } = req;
+export const requestTripAllDrivers = async (trip) => {
   try {
-    io = req.app.get("io");
-    const trip = await tripRepository.requestTrip(body);
-
-    if (trip) {
-      trips.push(trip);
-      io.emit("server:request-trip", trips);
-    }
-
-    res.status(200).json(trip);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.log("error", error);
+  }
+};
+export const cancelTrip = async (trip) => {
+  try {
+    await tripRepository.cancelTrip(trip);
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+export const requestTripNearestDriver = async (trip) => {
+  try {
+    if (trip !== null) {
+      return await trip;
+    }
+  } catch (error) {
+    console.log("error", error);
   }
 };
 
-export const acceptTrip = async (trip) => {
+export const acceptTrip = async (info) => {
   try {
-    const tripAccepted = await tripRepository.acceptTrip(trip);
+    const { trip, driver } = info;
+    const createTrip = await tripRepository.requestTrip(trip);
+    const tripAccepted = await tripRepository.acceptTrip(createTrip, driver);
 
     if (tripAccepted) {
-      const getTrip = trips.find((t) => t.id === trip.id);
       try {
         fetch("http://localhost:7000/enviarMensaje", {
           method: "POST",
@@ -34,18 +40,16 @@ export const acceptTrip = async (trip) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            receiver: `57${getTrip.phoneNumber}`,
-            driverName: trip.driverName,
-            time: trip.time,
+            receiver: `57${trip.phoneNumber}`,
+            id: driver.driverId,
+            driverName: driver.driverName,
+            time: driver.time,
             distance: trip.distance,
           }),
         }).catch((error) => console.log(error));
       } catch (error) {
         console.log(error);
       }
-
-      trips.pop(trip);
-      io.emit("server:request-trip", trips);
     }
   } catch (error) {
     console.log("error", error);
@@ -61,12 +65,22 @@ export const getTrips = async (req, res) => {
   }
 };
 
-export const startTripDriverLocation = async (data) => {
+export const startTripDriverLocation = (data) => {
   try {
-    const { tripInfo, driverLocation } = data;
-    console.log("tripInfo", driverLocation);
+    const { driverLocation } = data;
+    return driverLocation;
   } catch (error) {
     console.log("error", error);
+  }
+};
+
+export const getTripById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const trip = await tripRepository.getTripById(id);
+    res.status(200).json(trip);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 

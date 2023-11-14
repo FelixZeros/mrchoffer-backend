@@ -1,4 +1,6 @@
 import { Trip } from "../models/Trip.js";
+import { Driver } from "../models/Driver.js";
+import { Vehicle } from "../models/Vehicle.js";
 import TripRepository from "../../domain/User/TripRepository.js";
 
 export default class TripRepositoryImplements extends TripRepository {
@@ -10,11 +12,55 @@ export default class TripRepositoryImplements extends TripRepository {
       throw new Error("Error when create trip" + error);
     }
   }
-  async acceptTrip(trip) {
+
+  async cancelTrip(trip) {
+    try {
+      if (trip.cancelBy === 1) {
+        const tripCanceled = await Trip.update(
+          { status: 4, comment: trip.comment },
+          { where: { idFront: trip.id } }
+        );
+        return tripCanceled;
+      }
+      if (trip.cancelBy === 2) {
+        const tripCanceled = await Trip.update(
+          { status: 5, comment: trip.comment },
+          { where: { idFront: trip.id } }
+        );
+        return tripCanceled;
+      }
+    } catch (error) {
+      throw new Error("Error when cancel trip" + error);
+    }
+  }
+
+  async getTripById(id) {
+    try {
+      const trip = await Trip.findOne({
+        where: { id },
+        include: {
+          model: Driver,
+          as: "driver",
+        },
+      });
+      const getVehicle = await Vehicle.findOne({
+        where: { driverId: trip.dataValues.driverId },
+      });
+      const newTrip = {
+        ...trip.dataValues,
+        vehicle: getVehicle,
+      };
+      return newTrip;
+    } catch (error) {
+      throw new Error("Error when get trip by id" + error);
+    }
+  }
+
+  async acceptTrip(trip, driver) {
     try {
       const tripAccepted = await Trip.update(
-        { driverId: trip.driverId, status: 2 },
-        { where: { id: trip.id } }
+        { driverId: driver.driverId, status: 2 },
+        { where: { id: trip.dataValues.id } }
       );
       return tripAccepted;
     } catch (error) {
@@ -34,11 +80,9 @@ export default class TripRepositoryImplements extends TripRepository {
       const tripFinished = await Trip.update(
         {
           status: 3,
-          endTime: new Date(
-            new Date().getTime() - new Date().getTimezoneOffset() * 60000
-          ),
+          endTime: new Date().toLocaleTimeString(),
         },
-        { where: { id: trip.id } }
+        { where: { idFront: trip.id } }
       );
       return tripFinished;
     } catch (error) {

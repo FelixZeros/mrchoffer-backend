@@ -9,4 +9,11 @@ export default class CompanyRepositoryImplements extends CompanyRepository {
       throw new Error("Error when search companys" + error);
     }
   }
+  async getCompanyByUsername(username) {
+    try {
+      return await Company.findOne({ where: { username: username } });
+    } catch (error) {
+      throw new Error("Error when search company by id" + error);
+    }
+  }
 }

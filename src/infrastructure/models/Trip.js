@@ -1,12 +1,24 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../sequelize.js";
 import { Driver } from "./Driver.js";
+import { Company } from "./Company.js";
 
 export const Trip = sequelize.define("trip", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true,
+  },
+  idFront: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  companyId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  name: {
+    type: DataTypes.STRING,
   },
   driverId: {
     type: DataTypes.INTEGER,
@@ -17,19 +29,35 @@ export const Trip = sequelize.define("trip", {
     allowNull: false,
   },
   date: {
-    type: DataTypes.DATE,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   status: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  origin: {
+  textOrigin: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  destination: {
+  latitudeOrigin: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  longitudeOrigin: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  textDestination: {
     type: DataTypes.STRING,
+    allowNull: false,
+  },
+  latitudeDestination: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  longitudeDestination: {
+    type: DataTypes.FLOAT,
     allowNull: false,
   },
   distance: {
@@ -57,8 +85,12 @@ export const Trip = sequelize.define("trip", {
     allowNull: false,
   },
   endTime: {
-    type: DataTypes.TIME,
-    allowNull: null,
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  amountPassanger: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
   },
   createdAt: {
     type: DataTypes.DATE,
@@ -71,4 +103,5 @@ export const Trip = sequelize.define("trip", {
 });
 
 Trip.belongsTo(Driver, { foreignKey: "driverId" });
+Trip.belongsTo(Company, { foreignKey: "companyId" });
 Driver.hasMany(Trip, { foreignKey: "driverId" });

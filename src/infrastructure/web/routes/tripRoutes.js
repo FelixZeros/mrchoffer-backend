@@ -1,11 +1,11 @@
 import { Router } from "express";
 import {
-  requestTrip,
   getTrips,
+  getTripById,
 } from "../../../app/controllers/TripController.js";
 
 const router = Router();
 
-router.post("/request-trip", requestTrip);
 router.get("/get-trips", getTrips);
+router.get("/get-trip/:id", getTripById);
 export default router;
