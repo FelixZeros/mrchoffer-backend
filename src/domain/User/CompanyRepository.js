@@ -5,4 +5,7 @@ export default class CompanyRepository {
   async getCompanyByUsername(username) {
     throw new Error("Method not implemented.");
   }
+  async asignBalanceCompany(companyId, infoBalanceCompany) {
+    throw new Error("Method not implemented.");
+  }
 }

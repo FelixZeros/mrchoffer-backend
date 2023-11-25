@@ -7,6 +7,10 @@ export const Balance = sequelize.define("balance", {
     primaryKey: true,
     autoIncrement: true,
   },
+  companyId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   idDriverCompany: {
     type: DataTypes.INTEGER,
     allowNull: false,

@@ -2,6 +2,7 @@ import DriverRepository from "../../domain/User/DriverRepository.js";
 import { Driver } from "../models/Driver.js";
 import { Vehicle } from "../models/Vehicle.js";
 import { Trip } from "../models/Trip.js";
+import { DriverCompany } from "../models/DriverCompany.js";
 
 export default class DriverRepositoryImplements extends DriverRepository {
   async getById(id) {
@@ -16,6 +17,10 @@ export default class DriverRepositoryImplements extends DriverRepository {
           {
             model: Trip,
             as: "trips",
+          },
+          {
+            model: DriverCompany,
+            as: "driver_companies",
           },
         ],
       });

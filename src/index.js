@@ -6,6 +6,8 @@ import companyRoutes from "./infrastructure/web/routes/companyRoutes.js";
 import driverRoutes from "./infrastructure/web/routes/driverRoutes.js";
 import requestDriverCompanyRoutes from "./infrastructure/web/routes/requestDriverCompanyRoutes.js";
 import tripRoutes from "./infrastructure/web/routes/tripRoutes.js";
+import facturationRoutes from "./infrastructure/web/routes/facturationRoutes.js";
+import driverCompanyRoutes from "./infrastructure/web/routes/driverCompanyRoutes.js";
 import configureWebSockets from "./websockets.js";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -35,7 +37,9 @@ async function main() {
     companyRoutes,
     driverRoutes,
     tripRoutes,
-    requestDriverCompanyRoutes
+    requestDriverCompanyRoutes,
+    facturationRoutes,
+    driverCompanyRoutes
   );
 
   app.listen(process.env.APP_PORT, () => {

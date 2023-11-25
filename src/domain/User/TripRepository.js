@@ -17,4 +17,7 @@ export default class TripRepository {
   async getTripById(id) {
     throw new Error("Method not implemented.");
   }
+  getTripsByDriverInCompany(driver, company) {
+    throw new Error("Method not implemented.");
+  }
 }

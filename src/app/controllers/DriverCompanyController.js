@@ -59,3 +59,25 @@ export const deleteRequest = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const asignAmountDriverCompany = async (req, res) => {
+  try {
+    const request = await driverCompanyRepository.asignAmountDriverCompany(
+      req.body
+    );
+    res.status(200).json(request);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+export const getBalanceDriverCompany = async (req, res) => {
+  try {
+    const request = await driverCompanyRepository.getBalanceDriverCompany(
+      req.body
+    );
+    res.status(200).json(request);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};

@@ -21,3 +21,15 @@ export const getCompanyByUsername = async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 };
+
+export const asignBalanceCompany = async (req, res) => {
+  try {
+    const balanceCompany = await companyRepository.asignBalanceCompany(
+      req.params.companyId,
+      req.body
+    );
+    return res.status(200).json(balanceCompany);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};

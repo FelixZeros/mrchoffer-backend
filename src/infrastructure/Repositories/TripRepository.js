@@ -69,7 +69,14 @@ export default class TripRepositoryImplements extends TripRepository {
   }
   async getTrips() {
     try {
-      const trips = await Trip.findAll();
+      const trips = await Trip.findAll({
+        include: [
+          {
+            model: Driver,
+            as: "driver",
+          },
+        ],
+      });
       return trips;
     } catch (error) {
       throw new Error("Error when get trips" + error);
@@ -87,6 +94,30 @@ export default class TripRepositoryImplements extends TripRepository {
       return tripFinished;
     } catch (error) {
       throw new Error("Error when finish trip" + error);
+    }
+  }
+  async getTripsByDriverInCompany(driver, company) {
+    try {
+      const trips = await Trip.findAll({
+        where: { driverId: driver, companyId: company, status: 3 },
+      });
+
+      const setHandlingFee = trips.map((trip) => {
+        trip.dataValues.handlingFee = trip.dataValues.price * 0.1;
+        return trip;
+      });
+
+      const getSumAmountTrips = await Trip.sum("price", {
+        where: { driverId: driver, companyId: company, status: 3 },
+      });
+
+      return {
+        trips: setHandlingFee,
+        amountTotal: getSumAmountTrips,
+        handlingFee: getSumAmountTrips * 0.1,
+      };
+    } catch (error) {
+      throw new Error("Error when get trips driver today" + error);
     }
   }
 }

@@ -17,4 +17,7 @@ export default class DriverCompanyRepository {
   async deleteRequest() {
     throw new Error("Method not implemented.");
   }
+  async asignAmountDriverCompany() {
+    throw new Error("Method not implemented.");
+  }
 }

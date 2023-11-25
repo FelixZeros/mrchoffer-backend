@@ -1,6 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../sequelize.js";
 import { Balance } from "./Balance.js";
+import { BalanceCompany } from "./BalanceCompany.js";
 import { User } from "./User.js";
 
 export const Company = sequelize.define("company", {
@@ -12,6 +13,7 @@ export const Company = sequelize.define("company", {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
   userId: {
     type: DataTypes.INTEGER,
@@ -22,6 +24,22 @@ export const Company = sequelize.define("company", {
     allowNull: false,
   },
   address: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  department: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  typePerson: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  typeDocument: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  document: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -50,3 +68,11 @@ export const Company = sequelize.define("company", {
 Balance.belongsTo(Company, { foreignKey: "companyId", sourceKey: "id" });
 Company.hasMany(Balance, { foreignKey: "companyId", sourceKey: "id" });
 Company.belongsTo(User, { foreignKey: "userId", sourceKey: "id" });
+BalanceCompany.belongsTo(Company, {
+  foreignKey: "companyId",
+  sourceKey: "id",
+});
+Company.hasMany(BalanceCompany, {
+  foreignKey: "companyId",
+  sourceKey: "id",
+});

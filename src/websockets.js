@@ -1,5 +1,3 @@
-// websocket.js
-
 import { Server } from "socket.io";
 import { createServer } from "http";
 import {
@@ -51,6 +49,8 @@ const configureWebSockets = (app) => {
     socket.on("client:cancel-trip", (info) => {
       console.log("Cliente WebSocket envió información:");
       cancelTrip(info);
+      console.log(info);
+      socket.broadcast.emit(`server:cancel-trip-${info?.id}`, info);
     });
 
     socket.on("client:finish-trip", (info) => {

@@ -29,6 +29,7 @@ export const requestTripNearestDriver = async (trip) => {
 export const acceptTrip = async (info) => {
   try {
     const { trip, driver } = info;
+    console.log("trip", trip, "driver", driver);
     const createTrip = await tripRepository.requestTrip(trip);
     const tripAccepted = await tripRepository.acceptTrip(createTrip, driver);
 
@@ -89,5 +90,18 @@ export const finishTrip = async (trip) => {
     await tripRepository.finishTrip(trip);
   } catch (error) {
     console.log("error", error);
+  }
+};
+
+export const getTripsByDriverInCompany = async (req, res) => {
+  try {
+    const { driverId, companyId } = req.params;
+    const trips = await tripRepository.getTripsByDriverInCompany(
+      driverId,
+      companyId
+    );
+    res.status(200).json(trips);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

@@ -68,9 +68,13 @@ export const Trip = sequelize.define("trip", {
     type: DataTypes.DOUBLE,
     allowNull: false,
   },
-  genderPassenger: {
+  amountMale: {
     type: DataTypes.STRING,
-    allowNull: false,
+    allowNull: true,
+  },
+  amountFemale: {
+    type: DataTypes.STRING,
+    allowNull: true,
   },
   comment: {
     type: DataTypes.STRING,
@@ -87,10 +91,6 @@ export const Trip = sequelize.define("trip", {
   endTime: {
     type: DataTypes.STRING,
     allowNull: true,
-  },
-  amountPassanger: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
   },
   createdAt: {
     type: DataTypes.DATE,

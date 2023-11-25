@@ -4,7 +4,7 @@ import { Balance } from "./Balance.js";
 import { Driver } from "./Driver.js";
 import { Company } from "./Company.js";
 
-export const DriverCompany = sequelize.define("driver_company", {
+export const DriverCompany = sequelize.define("driver_companies", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,

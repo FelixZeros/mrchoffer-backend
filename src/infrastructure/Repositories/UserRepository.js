@@ -1,6 +1,7 @@
 import UserRepository from "../../domain/User/UserRepository.js";
 import { User } from "../models/User.js";
 import { Company } from "../models/Company.js";
+import { DriverCompany } from "../models/DriverCompany.js";
 import { Admin } from "../models/Admin.js";
 import { Driver } from "../models/Driver.js";
 import { Vehicle } from "../models/Vehicle.js";
@@ -24,7 +25,9 @@ export default class UserRepositoryImplements extends UserRepository {
       } else {
         const company = await Company.findOne({ where: { userId: user.id } });
         const admin = await Admin.findOne({ where: { userId: user.id } });
-        const driver = await Driver.findOne({ where: { userId: user.id } });
+        const driver = await Driver.findOne({
+          where: { userId: user.id },
+        });
         if (company) {
           return { type: "company", company };
         }
@@ -36,7 +39,7 @@ export default class UserRepositoryImplements extends UserRepository {
         }
       }
     } catch (error) {
-      throw new Error("Error logging in");
+      throw new Error(error);
     }
   }
 
@@ -56,6 +59,10 @@ export default class UserRepositoryImplements extends UserRepository {
             const company = await Company.create({
               name: data.name,
               address: data.address,
+              department: data.department,
+              typePerson: data.typePerson,
+              typeDocument: data.typeDocument,
+              document: data.document,
               city: data.city,
               phone: data.phone,
               photo: data.photo,

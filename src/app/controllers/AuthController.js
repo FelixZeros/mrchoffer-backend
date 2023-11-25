@@ -8,6 +8,6 @@ export const login = async (req, res) => {
 
     res.status(200).json({ message: "User logged in", user });
   } catch (Error) {
-    res.status(500).json({ message: "Error logging in", Error });
+    res.status(400).json({ message: Error.message });
   }
 };
