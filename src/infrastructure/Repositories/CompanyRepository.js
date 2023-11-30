@@ -3,6 +3,8 @@ import { BalanceCompany } from "../models/BalanceCompany.js";
 import CompanyRepository from "../../domain/User/CompanyRepository.js";
 import { User } from "../models/User.js";
 import { DriverCompany } from "../models/DriverCompany.js";
+import { Balance } from "../models/Balance.js";
+import { Driver } from "../models/Driver.js";
 
 export default class CompanyRepositoryImplements extends CompanyRepository {
   async getCompany() {
@@ -65,12 +67,53 @@ export default class CompanyRepositoryImplements extends CompanyRepository {
         amountVehicle: infoBalanceCompany.amountVehicle ?? null,
         paymentMethod: infoBalanceCompany.paymentMethod,
         reference: infoBalanceCompany.reference,
-        active: false,
+        active: true,
         daysRecharge: infoBalanceCompany.daysRecharge ?? null,
         dateStart: dateStart,
       });
     } catch (error) {
       throw new Error("Error when assigning balance to company" + error);
+    }
+  }
+  async getBalanceCompany(companyId) {
+    try {
+      const sumBalance = await Balance.sum("amount", {
+        where: { companyId: companyId },
+      });
+
+      const getCompanyPercentage = await Company.findOne({
+        where: { id: companyId },
+      });
+
+      const getBalance = await Balance.findAll({
+        where: { companyId: companyId },
+        include: [
+          {
+            model: Driver,
+            as: "driver",
+          },
+        ],
+      });
+
+      return {
+        balances: getBalance,
+        balanceTotal: sumBalance,
+        balance: sumBalance,
+        handlingFee: getCompanyPercentage.percentage * 100,
+      };
+    } catch (error) {
+      throw new Error("Error when search balance company" + error);
+    }
+  }
+
+  async asingFeeCompany(companyId, minFee, maxFee) {
+    try {
+      return await Company.update(
+        { minFee: minFee, maxFee: maxFee },
+        { where: { id: companyId } }
+      );
+    } catch (error) {
+      throw new Error("Error when assigning fee to company" + error);
     }
   }
 }

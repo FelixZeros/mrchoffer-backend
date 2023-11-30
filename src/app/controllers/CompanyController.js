@@ -33,3 +33,27 @@ export const asignBalanceCompany = async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 };
+
+export const getBalanceCompany = async (req, res) => {
+  try {
+    const balanceCompany = await companyRepository.getBalanceCompany(
+      req.params.companyId
+    );
+    return res.status(200).json(balanceCompany);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
+
+export const asingFeeCompany = async (req, res) => {
+  try {
+    const balanceCompany = await companyRepository.asingFeeCompany(
+      req.params.companyId,
+      req.body.minFee,
+      req.body.maxFee
+    );
+    return res.status(200).json(balanceCompany);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};

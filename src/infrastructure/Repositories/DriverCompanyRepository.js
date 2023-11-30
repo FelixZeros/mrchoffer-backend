@@ -6,6 +6,7 @@ import { Driver } from "../models/Driver.js";
 import { Trip } from "../models/Trip.js";
 import { Balance } from "../models/Balance.js";
 import { BalanceCompany } from "../models/BalanceCompany.js";
+import { Vehicle } from "../models/Vehicle.js";
 
 export default class DriverCompanyImplements extends DriverCompanyRepository {
   async getRequest() {
@@ -17,7 +18,7 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
   }
   async getRequestByCompanyId(data) {
     try {
-      return await RequestDriverCompany.findAll({
+      const Request = await RequestDriverCompany.findAll({
         where: { companyId: data.companyId },
         include: [
           {
@@ -30,6 +31,16 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
           },
         ],
       });
+
+      const getTripsByDriverIdAndStatus = await Trip.findAll({
+        where: { companyId: data.companyId, status: 3 },
+      });
+
+      Request.forEach((element) => {
+        element.dataValues.trips = getTripsByDriverIdAndStatus;
+      });
+
+      return Request;
     } catch (error) {
       throw new Error("Error when search companys" + error);
     }
@@ -69,8 +80,21 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
         where: {
           companyId: request.companyId,
           driverId: request.driverId,
+          status: 1,
         },
       });
+
+      const existRequestAccepted = await RequestDriverCompany.findOne({
+        where: {
+          companyId: request.companyId,
+          driverId: request.driverId,
+          status: 2,
+        },
+      });
+
+      if (existRequestAccepted) {
+        throw new Error("Error when create company");
+      }
 
       if (existRequest) {
         throw new Error("Error when create company");
@@ -85,14 +109,44 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
     try {
       if (data.response === true) {
         if (data.status === 2) {
+          const existRequest = await RequestDriverCompany.findOne({
+            where: {
+              companyId: data.companyId,
+              driverId: data.driverId,
+              status: 2,
+            },
+          });
+          if (existRequest) {
+            console.log("Error when update company");
+            throw new Error("Error when update company");
+          }
           await RequestDriverCompany.update(
             { status: data.status, comment: data.comment },
             { where: { id: data.id } }
           );
-          return await DriverCompany.create({
-            companyId: data.companyId,
-            driverId: data.driverId,
-            status: 1,
+          const existDriverCompany = await DriverCompany.findOne({
+            where: { companyId: data.companyId, driverId: data.driverId },
+          });
+          if (existDriverCompany) {
+            return await DriverCompany.update(
+              { status: 1 },
+              { where: { companyId: data.companyId, driverId: data.driverId } }
+            );
+          } else {
+            return await DriverCompany.create({
+              companyId: data.companyId,
+              driverId: data.driverId,
+              status: 1,
+            });
+          }
+        }
+        if (data.status === 3) {
+          await RequestDriverCompany.update(
+            { status: data.status, comment: data.comment },
+            { where: { id: data.id } }
+          );
+          return await DriverCompany.destroy({
+            where: { companyId: data.companyId, driverId: data.driverId },
           });
         }
         if (data.status === 5) {
@@ -100,20 +154,18 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
             { status: data.status, comment: data.comment },
             { where: { id: data.id } }
           );
-          return await DriverCompany.update(
-            { status: 5 },
-            { where: { companyId: data.companyId, driverId: data.driverId } }
-          );
+          return await DriverCompany.destroy({
+            where: { companyId: data.companyId, driverId: data.driverId },
+          });
         }
         if (data.status === 4) {
           await RequestDriverCompany.update(
             { status: data.status, comment: data.comment },
             { where: { id: data.id } }
           );
-          return await DriverCompany.update(
-            { status: 4 },
-            { where: { companyId: data.companyId, driverId: data.driverId } }
-          );
+          return await DriverCompany.destroy({
+            where: { companyId: data.companyId, driverId: data.driverId },
+          });
         }
       }
       if (data.response === false) {
@@ -145,14 +197,18 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
         where: { companyId: data.companyId },
       });
 
+      const getCompanyPercentage = await Company.findOne({
+        where: { id: data.companyId },
+      });
+
       if (
         getSumBalanceCompany &&
         getSumBalanceCompany > 0 &&
-        getSumBalanceCompany >= data.amount
+        getSumBalanceCompany >= data.amount * getCompanyPercentage.percentage
       ) {
         await BalanceCompany.create({
           companyId: data.companyId,
-          amount: data.amount * -1,
+          amount: data.amount * getCompanyPercentage.percentage * -1,
           status: "Completada",
           type: "Recarga",
           active: true,
@@ -161,7 +217,10 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
         });
         return await Balance.create({
           companyId: data.companyId,
+          driverId: data.driverId,
           idDriverCompany: getDriverCompany.id,
+          paymentMethod: data.paymentMethod,
+          handlingFee: data.amount * 0.1,
           amount: data.amount,
         });
       } else {
@@ -189,6 +248,26 @@ export default class DriverCompanyImplements extends DriverCompanyRepository {
       return { getBalance, amountTotal: getSumBalance };
     } catch (error) {
       throw new Error("Error when search balance driver company" + error);
+    }
+  }
+
+  async getDriverByCompanyId(data) {
+    try {
+      const getDriverCompany = await DriverCompany.findAll({
+        where: { companyId: data.companyId },
+      });
+
+      const getDriversInfo = await Driver.findAll({
+        where: { id: getDriverCompany.map((item) => item.driverId) },
+        include: {
+          model: Vehicle,
+          as: "vehicle",
+        },
+      });
+
+      return getDriversInfo;
+    } catch (error) {
+      throw new Error("Error when search driver company" + error);
     }
   }
 }

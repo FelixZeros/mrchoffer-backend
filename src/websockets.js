@@ -21,6 +21,7 @@ const configureWebSockets = (app) => {
     console.log("Cliente conectado", socket.id);
     socket.on("client:request-trip", async (info) => {
       if (info.attempt === 1) {
+        console.log("Cliente WebSocket envió información:");
         await requestTripNearestDriver(info).then((data) => {
           socket.broadcast.emit("server:receive-trip", data);
         });

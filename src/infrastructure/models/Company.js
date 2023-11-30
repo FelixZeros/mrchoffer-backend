@@ -55,6 +55,19 @@ export const Company = sequelize.define("company", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  minFee: {
+    type: DataTypes.DOUBLE,
+    allowNull: true,
+  },
+  maxFee: {
+    type: DataTypes.DOUBLE,
+    allowNull: true,
+  },
+  percentage: {
+    type: DataTypes.DOUBLE,
+    allowNull: true,
+    defaultValue: 0.3,
+  },
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false,

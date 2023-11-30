@@ -45,6 +45,10 @@ export const Driver = sequelize.define("driver", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  department: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   phone: {
     type: DataTypes.STRING,
     allowNull: false,

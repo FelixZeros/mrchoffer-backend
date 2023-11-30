@@ -105,8 +105,9 @@ export default class UserRepositoryImplements extends UserRepository {
             const driver = await Driver.create({
               identification: data.identification,
               name: data.name,
-              gender: data.phone,
+              gender: data.gender,
               city: data.city,
+              department: data.department,
               photoDriverLicenseFront: data.photoDriverLicenseFront,
               photoDriverLicenseBack: data.photoDriverLicenseBack,
               photoIdentificationBack: data.photoIdentificationBack,

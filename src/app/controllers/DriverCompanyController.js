@@ -81,3 +81,14 @@ export const getBalanceDriverCompany = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
+
+export const getDriverByCompanyId = async (req, res) => {
+  try {
+    const driver = await driverCompanyRepository.getDriverByCompanyId(
+      req.params
+    );
+    return res.status(200).json(driver);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
+};
