@@ -117,7 +117,7 @@ export default class UserRepositoryImplements extends UserRepository {
               userId: user.id,
             });
             if (driver) {
-              const vehicle = await Vehicle.create({
+              Vehicle.create({
                 numberPropertyCard: data.numberPropertyCard,
                 brand: data.brand,
                 model: data.model,
