@@ -45,6 +45,19 @@ const configureWebSockets = (app) => {
     socket.on("client:arrived-trip", (info) => {
       console.log("Cliente WebSocket envió información:");
       socket.broadcast.emit(`server:arrived-trip-${info?.tripinfo}`, info);
+      try {
+        fetch("http://localhost:7000/conductorLlego", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            receiver: `57${info?.phoneNumber}`,
+          }),
+        }).catch((error) => console.log(error));
+      } catch (error) {
+        console.log(error);
+      }
     });
 
     socket.on("client:cancel-trip", (info) => {

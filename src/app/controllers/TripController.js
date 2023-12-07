@@ -11,6 +11,19 @@ export const requestTripAllDrivers = async (trip) => {
 };
 export const cancelTrip = async (trip) => {
   try {
+    try {
+      fetch("http://localhost:7000/cancelarViaje", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          receiver: `57${trip.phoneNumber}`,
+        }),
+      }).catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
     await tripRepository.cancelTrip(trip);
   } catch (error) {
     console.log("error", error);
@@ -19,6 +32,19 @@ export const cancelTrip = async (trip) => {
 export const requestTripNearestDriver = async (trip) => {
   try {
     if (trip !== null) {
+      try {
+        fetch("http://localhost:7000/solicitudCarrera", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            receiver: `57${trip.phoneNumber}`,
+          }),
+        }).catch((error) => console.log(error));
+      } catch (error) {
+        console.log(error);
+      }
       return await trip;
     }
   } catch (error) {
@@ -87,6 +113,20 @@ export const getTripById = async (req, res) => {
 
 export const finishTrip = async (trip) => {
   try {
+    try {
+      fetch("http://localhost:7000/finalizarViaje", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          receiver: `57${trip.phoneNumber}`,
+          idFront: trip.idFront,
+        }),
+      }).catch((error) => console.log(error));
+    } catch (error) {
+      console.log(error);
+    }
     await tripRepository.finishTrip(trip);
   } catch (error) {
     console.log("error", error);
