@@ -68,7 +68,7 @@ export const acceptTrip = async (info) => {
           },
           body: JSON.stringify({
             receiver: `57${trip.phoneNumber}`,
-            id: driver.driverId,
+            id: trip.idFront,
             driverName: driver.driverName,
             time: driver.time,
             distance: trip.distance,
