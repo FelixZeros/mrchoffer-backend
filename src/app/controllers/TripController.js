@@ -12,7 +12,7 @@ export const requestTripAllDrivers = async (trip) => {
 export const cancelTrip = async (trip) => {
   try {
     try {
-      fetch("http://localhost:7000/cancelarViaje", {
+      fetch(`http://localhost:${process.env.BOT_PORT}/cancelarViaje`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,7 +33,7 @@ export const requestTripNearestDriver = async (trip) => {
   try {
     if (trip !== null) {
       try {
-        fetch("http://localhost:7000/solicitudCarrera", {
+        fetch(`http://localhost:${process.env.BOT_PORT}/solicitudCarrera`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -61,7 +61,7 @@ export const acceptTrip = async (info) => {
 
     if (tripAccepted) {
       try {
-        fetch("http://localhost:7000/enviarMensaje", {
+        fetch(`http://localhost:${process.env.BOT_PORT}/enviarMensaje`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -114,14 +114,14 @@ export const getTripById = async (req, res) => {
 export const finishTrip = async (trip) => {
   try {
     try {
-      fetch("http://localhost:7000/finalizarViaje", {
+      fetch(`http://localhost:${process.env.BOT_PORT}/finalizarViaje`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           receiver: `57${trip.phoneNumber}`,
-          idFront: trip.idFront,
+          idFront: trip.id,
         }),
       }).catch((error) => console.log(error));
     } catch (error) {
@@ -141,6 +141,16 @@ export const getTripsByDriverInCompany = async (req, res) => {
       companyId
     );
     res.status(200).json(trips);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getTripByIdFront = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const trip = await tripRepository.getTripByIdFront(id);
+    res.status(200).json(trip);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

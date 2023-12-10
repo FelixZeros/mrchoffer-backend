@@ -120,4 +120,25 @@ export default class TripRepositoryImplements extends TripRepository {
       throw new Error("Error when get trips driver today" + error);
     }
   }
+  async getTripByIdFront(id) {
+    try {
+      const trip = await Trip.findOne({
+        where: { idFront: id },
+        include: {
+          model: Driver,
+          as: "driver",
+        },
+      });
+      const getVehicle = await Vehicle.findOne({
+        where: { driverId: trip.dataValues.driverId },
+      });
+      const newTrip = {
+        ...trip.dataValues,
+        vehicle: getVehicle,
+      };
+      return newTrip;
+    } catch (error) {
+      throw new Error("Error when get trip by id" + error);
+    }
+  }
 }
